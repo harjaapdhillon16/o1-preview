@@ -11,7 +11,7 @@ dotenv.config();
 
 // OpenAI instance creation
 const openai = new OpenAI({
-  apiKey: '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'
+  apiKey: process.env.OPEN_AI_KEY
 });
 
 
