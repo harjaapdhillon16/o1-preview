@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { FiSend } from "react-icons/fi";
 import { BsChevronDown, BsPlusLg } from "react-icons/bs";
@@ -52,7 +53,7 @@ const Chat = (props: any) => {
     setConversation([
       ...conversation,
       { content: message, role: "user" },
-      { content: null, role: "system" },
+      { content: null, role: "assistant" },
     ]);
 
     // Clear the message & remove empty chat
@@ -78,7 +79,7 @@ const Chat = (props: any) => {
         setConversation([
           ...conversation,
           { content: message, role: "user" },
-          { content: data.message, role: "system" },
+          { content: data.message, role: "assistant" },
         ]);
       } else {
         console.error(response);

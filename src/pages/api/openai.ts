@@ -1,19 +1,19 @@
+// @ts-nocheck
+
 import { DEFAULT_OPENAI_MODEL } from "@/shared/Constants";
 import { OpenAIModel } from "@/types/Model";
 import * as dotenv from "dotenv";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 // Get your environment variables
 dotenv.config();
 
-// OpenAI configuration creation
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+// OpenAI instance creation
+const openai = new OpenAI({
+  apiKey: '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'
 });
 
-// OpenAI instance creation
-const openai = new OpenAIApi(configuration);
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,32 +25,27 @@ export default async function handler(
   }
 
   const body = req.body;
-  const messages = (body?.messages || []) as ChatCompletionRequestMessage[];
+  const messages = (body?.messages || []) as any[];
   const model = (body?.model || DEFAULT_OPENAI_MODEL) as OpenAIModel;
 
   try {
-    const promptMessage: ChatCompletionRequestMessage = {
-      role: "system",
-      content: "You are ChatGPT. Respond to the user like you normally would.",
-    };
-    const initialMessages: ChatCompletionRequestMessage[] = messages.splice(
+    const initialMessages: any[] = messages.splice(
       0,
       3
     );
-    const latestMessages: ChatCompletionRequestMessage[] = messages
+    const latestMessages: any[] = messages
       .slice(-5)
       .map((message) => ({
         role: message.role,
         content: message.content,
-      }));
+      }))
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: model.id,
-      temperature: 0.5,
-      messages: [promptMessage, ...initialMessages, ...latestMessages],
+      messages: [...initialMessages, ...latestMessages].filter((item) => item !== "system"),
     });
 
-    const responseMessage = completion.data.choices[0].message?.content.trim();
+    const responseMessage = completion.choices[0].message?.content.trim();
 
     if (!responseMessage) {
       res

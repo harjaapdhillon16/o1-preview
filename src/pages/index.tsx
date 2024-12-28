@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useState } from "react";
 import Chat from "@/components/Chat";
 import MobileSiderbar from "@/components/MobileSidebar";

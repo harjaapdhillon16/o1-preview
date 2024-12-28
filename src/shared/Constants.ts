@@ -3,8 +3,8 @@ import { OpenAIModel } from "@/types/Model";
 export const LS_UUID = "@ls/uuid";
 
 export const DEFAULT_OPENAI_MODEL = {
-  name: "Default (GPT-3.5)",
-  id: "gpt-3.5-turbo",
+  name: "O1",
+  id: "o1-preview",
   available: true,
 };
 
